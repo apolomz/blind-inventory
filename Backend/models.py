@@ -32,7 +32,7 @@ class SnapshotInventario(Base):
     turno = relationship("Turno", back_populates="snapshots")
 
 class ConteoFisico(Base):
-    """Guarda lo que el cajero digitó a ciegas al final del turno"""
+    """Guarda lo que el cajero digitó al final del turno"""
     __tablename__ = "conteos_fisicos"
 
     id = Column(Integer, primary_key=True, index=True)
