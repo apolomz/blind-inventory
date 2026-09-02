@@ -1,0 +1,59 @@
+# BlindInventory
+
+> An audit system, blind inventory control, and shift reconciliation tool designed for high-turnover retail businesses, optimized to prevent unfair wage deductions for shift personnel and unmonitored stock loss.
+
+---
+
+## Project Context
+
+In high-turnover commercial environments (such as convenience stores or transport terminal retail points), manual counts and paper-notebook reconciliations create severe operational issues:
+* **Phantom Shortages:** Accumulation of historical discrepancies from previous weeks being unfairly charged to the current shift's personnel.
+* **Data Manipulation:** Employees altering or "fixing" numbers because they know the expected theoretical stock beforehand.
+* **Lack of Traceability:** Inability to pinpoint the exact shift where a loss occurred.
+
+**BlindInventory POS** solves this problem by implementing a **Blind Shift Inventory** workflow, freezing the initial inventory via the POS API and automatically crossing it against recorded sales.
+
+---
+
+## Technology Stack
+
+* **Frontend:** React, Vite, Tailwind CSS (Modern interface, optimized for rapid numeric keypad entry).
+* **Backend:** Python with FastAPI (Business logic processing, asynchronous handling, and parsing scripts).
+* **Local Persistence:** SQLite3 (Embedded transactional database, highly resilient to power outages).
+* **Data Processing:** Pandas (For parsing and cleaning CSV sales reports directly in RAM).
+* **External Integration:** REST API connection with Alegra POS (Basic Auth / Token authentication) with CSV file fallback support.
+
+---
+
+## System Architecture
+
+The system operates on a decoupled client-server architecture running locally:
+
+```text
+[Frontend: React + Tailwind]
+       │
+       │  (HTTP Requests Localhost / REST API)
+       ▼
+[Embedded Backend: FastAPI] ◄──► [Local Database: SQLite (.db)]
+       │
+       ├──► (Primary: HTTPS REST API) ──► [Alegra Cloud Servers]
+       │
+       └──► (Fallback: File Reader) ───► [Sales CSV Files]
+⚙️ Core FeaturesShift Opening (Snapshot): Upon starting a shift, the system captures and freezes the initial inventory stock.Blind Physical Count: The cashier inputs physical counts organized by category (Beverages, Snacks/Chips, Fried Foods, Bakery, Sweets) without viewing the expected theoretical stock, preventing bias or manipulation.Automatic Discrepancy Calculation: The system computes the control formula:$$\text{Theoretical Stock} = \text{Initial Stock} - \text{Recorded Sales}$$$$\text{Difference} = \text{Physical Count} - \text{Theoretical Stock}$$Monetary Valuation (COP): If a shortage is detected, the system immediately calculates the exact economic value to report or charge.🚀 Installation & Local Setup GuideFollow these steps to clone and run the project locally:1. Clone the repositoryBashgit clone [https://github.com/your-username/blind-inventory-pos.git](https://github.com/apolomz/blind-inventory-pos.git)
+cd blind-inventory-pos
+2. Start the Backend (FastAPI)Bashcd backend
+python -m venv venv
+# Activate virtual environment:
+# On Windows: venv\Scripts\activate
+# On Mac/Linux: source venv/bin/activate
+
+pip install -r requirements.txt
+uvicorn main:app --reload
+(The API will run at http://localhost:8000 and interactive docs at http://localhost:8000/docs)3. Start the Frontend (React)Open another terminal in the root project folder:Bashcd frontend
+npm install
+npm run dev
+
+
+Jhoan Sebastian Fernandez
+
+Developed with a systems engineering approach focused on solving real-world business challenges.
