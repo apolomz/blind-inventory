@@ -7,11 +7,21 @@ from pydantic import BaseModel
 from datetime import datetime
 from database import get_db
 from typing import List
+from fastapi.middleware.cors import CORSMiddleware
+
 
 # Crea las tablas
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="BlindInventory POS API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # Permite que React se conecte
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def read_root():
