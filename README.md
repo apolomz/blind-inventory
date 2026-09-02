@@ -99,23 +99,15 @@ The cashier **does not see the expected theoretical stock**, preventing bias and
 
 The system calculates the expected inventory using the recorded initial stock and sales:
 
-$$
-\text{Theoretical Stock}
-=
-\text{Initial Stock}
--
-\text{Recorded Sales}
-$$
+```math
+\text{Theoretical Stock} = \text{Initial Stock} - \text{Recorded Sales}
+```
 
 The physical count is then compared against the theoretical stock:
 
-$$
-\text{Difference}
-=
-\text{Physical Count}
--
-\text{Theoretical Stock}
-$$
+```math
+\text{Difference} = \text{Physical Count} - \text{Theoretical Stock}
+```
 
 A negative result represents a shortage, while a positive result represents an excess.
 
